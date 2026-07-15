@@ -18,7 +18,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-w#cchq!5s+52e=h1g@5x&=apau
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 # Parse comma-separated list of allowed hosts from the environment
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
+ALLOWED_HOSTS = ['sunilkumar003.pythonanywhere.com', '127.0.0.1', 'localhost']
 
 INSTALLED_APPS = [
     'django.contrib.admin',

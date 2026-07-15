@@ -1,0 +1,63 @@
+{% extends 'dashboard/base.html' %} {% block content %}
+<style>
+  .prof-card {
+    background-color: var(--panel-dark);
+    border: 1px solid var(--border-clr);
+    padding: 40px;
+    border-radius: 12px;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+  }
+  .avatar-box {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: var(--bg-dark);
+    border: 2px solid var(--teal-glow);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    color: var(--teal-glow);
+  }
+  .info-line {
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  .info-line strong {
+    color: var(--text-muted);
+    display: inline-block;
+    width: 150px;
+  }
+</style>
+
+<div class="prof-card">
+  <div class="avatar-box">
+    <i class="fa-solid fa-user-shield"></i>
+  </div>
+  <div>
+    <h2 style="margin-top: 0; color: #fff; margin-bottom: 15px">
+      {% if profile.user.username %} {{ profile.user.username }} {% elif
+      request.session.logged_in_user %} {{ request.session.logged_in_user }} {%
+      else %} Clinical Operator {% endif %}
+    </h2>
+    <div class="info-line">
+      <strong>Designation:</strong> {{ profile.designation|default:"Senior
+      Diagnostic Officer" }}
+    </div>
+    <div class="info-line">
+      <strong>Contact Line:</strong> {{ profile.phone|default:"+91
+      (Institutional Secure Line)" }}
+    </div>
+    <div class="info-line">
+      <strong>Demographics:</strong> Age {{ profile.age|default:"38" }} / {{
+      profile.gender|default:"Verified Professional" }}
+    </div>
+    <div class="info-line">
+      <strong>Access Protocol:</strong> {{ profile.purpose|default:"Level-2 High
+      Concurrency Raster Clearance" }}
+    </div>
+  </div>
+</div>
+{% endblock %}

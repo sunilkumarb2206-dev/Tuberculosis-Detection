@@ -1,0 +1,214 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TB SCAN AI - Clinical Portal</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --bg-dark: #090f1c;
+        --panel-dark: #111a2e;
+        --teal-glow: #00f2fe;
+        --teal-dim: #00b4d8;
+        --text-main: #f1f5f9;
+        --text-muted: #94a3b8;
+        --border-clr: #1e294b;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-color: var(--bg-dark);
+        color: var(--text-main);
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      /* Top Navigation Bar Layout */
+      .header-navbar {
+        background: linear-gradient(135deg, #111a2e 0%, #0f172a 100%);
+        border-bottom: 2px solid var(--border-clr);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 40px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+      .brand-identity {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        color: #fff;
+        text-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
+      }
+      .brand-identity i {
+        color: var(--teal-glow);
+        font-size: 26px;
+      }
+      .nav-links-horizontal {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .nav-item-link {
+        color: var(--text-muted);
+        text-decoration: none;
+        padding: 10px 18px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .nav-item-link:hover,
+      .nav-item-link.active {
+        color: var(--teal-glow);
+        background-color: rgba(0, 242, 254, 0.08);
+        box-shadow: inset 0 0 8px rgba(0, 242, 254, 0.1);
+      }
+      .user-pill {
+        background-color: rgba(30, 41, 75, 0.6);
+        padding: 8px 16px;
+        border-radius: 20px;
+        border: 1px solid var(--border-clr);
+        font-size: 13px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .user-pill i {
+        color: var(--teal-glow);
+      }
+
+      .main-wrapper {
+        flex: 1;
+        padding: 40px;
+        width: 90%;
+        max-width: 1400px;
+        margin: 0 auto;
+        box-sizing: border-box;
+      }
+
+      /* Footer Standards */
+      .footer-bar {
+        background-color: #0b1121;
+        border-top: 1px solid var(--border-clr);
+        padding: 20px 40px;
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 12px;
+        font-weight: 500;
+        margin-top: auto;
+      }
+      .footer-bar span {
+        color: var(--text-main);
+        font-weight: 600;
+      }
+
+      /* Responsive Media Queries for Mobile, Tab, and Desktop */
+      @media screen and (max-width: 1024px) {
+        .header-navbar {
+          padding: 15px 20px;
+        }
+        .main-wrapper {
+          padding: 25px;
+          width: 95%;
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        .header-navbar {
+          flex-direction: column;
+          gap: 15px;
+          padding: 15px;
+          position: relative;
+        }
+        .nav-links-horizontal {
+          justify-content: center;
+          gap: 4px;
+        }
+        .nav-item-link {
+          padding: 8px 12px;
+          font-size: 13px;
+        }
+        .main-wrapper {
+          padding: 15px;
+          width: 100%;
+        }
+        .footer-bar {
+          padding: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header-navbar">
+      <div class="brand-identity">
+        <i class="fa-solid fa-microscope animate-pulse"></i>
+        TB SCAN <span style="color: var(--teal-glow)">AI</span>
+      </div>
+      <nav class="nav-links-horizontal">
+        <a href="{% url 'home' %}" class="nav-item-link"
+          ><i class="fa-solid fa-chart-pie"></i> Home</a
+        >
+        <a href="{% url 'analysis' %}" class="nav-item-link"
+          ><i class="fa-solid fa-wand-magic-sparkles"></i> Analysis</a
+        >
+        <a href="{% url 'records' %}" class="nav-item-link"
+          ><i class="fa-solid fa-folder-medical"></i> Reports</a
+        >
+        <a href="{% url 'about' %}" class="nav-item-link"
+          ><i class="fa-solid fa-circle-info"></i> About Us</a
+        >
+        <a href="{% url 'support' %}" class="nav-item-link"
+          ><i class="fa-solid fa-headset"></i> Support</a
+        >
+        <a href="{% url 'profile' %}" class="nav-item-link"
+          ><i class="fa-solid fa-user-md"></i> Profile</a
+        >
+        <a
+          href="{% url 'logout' %}"
+          class="nav-item-link"
+          style="color: #ef4444"
+          ><i class="fa-solid fa-power-off"></i
+        ></a>
+      </nav>
+      <div class="user-pill">
+        <i class="fa-solid fa-circle-check"></i>
+        {% if request.session.logged_in_user %} {{
+        request.session.logged_in_user }} {% elif user.is_authenticated %} {{
+        user.username }} {% else %} Guest Clinician {% endif %}
+      </div>
+    </header>
+
+    <main class="main-wrapper">{% block content %}{% endblock %}</main>
+
+    <footer class="footer-bar">
+      &copy; 2026 <span>TB SCAN AI Systems Inc.</span> | Global Clinical
+      Intelligence Portal. All Rights Reserved.<br />
+      <div style="margin-top: 5px; opacity: 0.6; font-size: 11px">
+        Protected by US & International Patent Provisions (PT-2026-TBA91).
+        Certified Medical Screening Framework.
+      </div>
+    </footer>
+  </body>
+</html>

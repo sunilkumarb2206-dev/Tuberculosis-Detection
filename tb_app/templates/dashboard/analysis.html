@@ -1,0 +1,151 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+  .split-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+  .config-panel {
+    background-color: var(--panel-dark);
+    border: 1px solid var(--border-clr);
+    padding: 30px;
+    border-radius: 12px;
+  }
+  .input-grp {
+    margin-bottom: 20px;
+  }
+  .input-grp label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .input-grp input[type="text"],
+  .input-grp input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-clr);
+    background-color: var(--bg-dark);
+    color: #fff;
+    box-sizing: border-box;
+  }
+  .submit-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--teal-dim);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .submit-btn:hover {
+    background-color: var(--teal-glow);
+    color: #000;
+  }
+
+  .result-box {
+    background-color: #0f172a;
+    border: 2px dashed var(--teal-dim);
+    border-radius: 12px;
+    padding: 30px;
+  }
+  .badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 800;
+    display: inline-block;
+  }
+  .badge-pos {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid #ef4444;
+  }
+  .badge-neg {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border: 1px solid #10b981;
+  }
+</style>
+
+<div class="split-layout">
+  <div class="config-panel">
+    <h2 style="margin-top: 0; color: #fff">Diagnostic X-Ray Processor</h2>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="input-grp">
+        <label>PATIENT RECOGNITION IDENTIFIER (ID)</label>
+        <input
+          type="text"
+          name="patient_id"
+          placeholder="e.g., P-109283"
+          required
+        />
+      </div>
+      <div class="input-grp">
+        <label>DICOM / HIGH RESOLUTION CHEST X-RAY IMAGE</label>
+        <input type="file" name="xray_image" accept="image/*" required />
+      </div>
+      <button type="submit" class="submit-btn">RUN AUTOMATED DIAGNOSIS</button>
+    </form>
+  </div>
+
+  <div>
+    {% if report %}
+    <div class="result-box">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 20px;
+        "
+      >
+        <h3 style="margin: 0; color: #fff">Analysis Outcomes</h3>
+        <span
+          class="badge {% if report.result == 'TB Positive' %}badge-pos{% else %}badge-neg{% endif %}"
+          >{{ report.result }}</span
+        >
+      </div>
+      <p><strong>Confidence Rating:</strong> {{ report.confidence }}%</p>
+      <p>
+        <strong>Clinical Recommendation:</strong> {{ report.doctor_suggestion }}
+      </p>
+      <p><strong>Dietary Interventions:</strong> {{ report.diet_plan }}</p>
+      <p><strong>Isolation Preventions:</strong> {{ report.preventions }}</p>
+      <a
+        href="{% url 'download_pdf' report.id %}"
+        style="
+          display: inline-block;
+          margin-top: 15px;
+          color: var(--teal-glow);
+          font-weight: 700;
+          text-decoration: none;
+        "
+      >
+        <i class="fa-solid fa-file-pdf"></i> Download Official Clinical PDF
+      </a>
+    </div>
+    {% else %}
+    <div
+      style="
+        border: 2px dashed #1e294b;
+        border-radius: 12px;
+        padding: 60px;
+        text-align: center;
+        color: var(--text-muted);
+      "
+    >
+      <i
+        class="fa-solid fa-wave-square"
+        style="font-size: 32px; margin-bottom: 15px; color: var(--border-clr)"
+      ></i>
+      <p>Awaiting file ingest sequence parameters.</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

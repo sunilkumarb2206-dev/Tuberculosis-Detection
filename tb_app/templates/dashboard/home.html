@@ -1,0 +1,74 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+  .welcome-card {
+    background: linear-gradient(135deg, #16223f 0%, #111a2e 100%);
+    border: 1px solid var(--border-clr);
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+  }
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+  }
+  .metric-card {
+    background-color: var(--panel-dark);
+    border: 1px solid var(--border-clr);
+    padding: 25px;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .metric-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+  }
+  .card-total::before {
+    background-color: var(--teal-glow);
+  }
+  .card-positive::before {
+    background-color: #ef4444;
+  }
+  .card-negative::before {
+    background-color: #10b981;
+  }
+  .val {
+    font-size: 36px;
+    font-weight: 800;
+    margin-top: 10px;
+  }
+</style>
+
+<div class="welcome-card">
+  <h1 style="margin: 0; color: #fff">Welcome Back, Clinical Portal Operator</h1>
+  <p style="color: var(--text-muted); margin-top: 8px; margin-bottom: 0">
+    Automated radiological diagnostics and analytics console active.
+  </p>
+</div>
+
+<div class="metrics-grid">
+  <div class="metric-card card-total">
+    <div style="color: var(--text-muted); font-weight: 600">
+      TOTAL EXAMINATIONS
+    </div>
+    <div class="val text-white">{{ total_scans }}</div>
+  </div>
+  <div class="metric-card card-positive">
+    <div style="color: var(--text-muted); font-weight: 600">
+      ACTIVE TB DETECTED
+    </div>
+    <div class="val" style="color: #ef4444">{{ positive_scans }}</div>
+  </div>
+  <div class="metric-card card-negative">
+    <div style="color: var(--text-muted); font-weight: 600">
+      NORMAL FINDINGS
+    </div>
+    <div class="val" style="color: #10b981">{{ negative_scans }}</div>
+  </div>
+</div>
+{% endblock %}

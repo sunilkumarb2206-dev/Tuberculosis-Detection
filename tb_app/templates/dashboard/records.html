@@ -1,0 +1,203 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+  .controls-panel {
+    background-color: var(--panel-dark);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-clr);
+    margin-bottom: 25px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+  .ctrl-box select,
+  .ctrl-box input {
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border-clr);
+    color: #fff;
+    padding: 10px;
+    border-radius: 6px;
+  }
+  .btn-apply {
+    padding: 10px 20px;
+    background-color: var(--teal-dim);
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .table-container {
+    background-color: var(--panel-dark);
+    border-radius: 8px;
+    border: 1px solid var(--border-clr);
+    overflow: hidden;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+  th {
+    background-color: #0f172a;
+    padding: 15px;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  td {
+    padding: 15px;
+    border-bottom: 1px solid var(--border-clr);
+    font-size: 14px;
+  }
+  tr:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+  }
+</style>
+
+<h2 style="margin-top: 0; color: #fff">Historical Diagnostics Ledger</h2>
+
+<form method="GET" class="controls-panel">
+  <div class="ctrl-box">
+    <input
+      type="text"
+      name="search_patient"
+      placeholder="Search Patient ID"
+      value="{{ search_query }}"
+    />
+  </div>
+  <div class="ctrl-box">
+    <select name="sort_by">
+      <option
+        value="latest"
+        {%
+        if
+        sort_param=""
+        ="latest"
+        %}selected{%
+        endif
+        %}
+      >
+        Timestamp: Latest (Merge Sort)
+      </option>
+      <option
+        value="oldest"
+        {%
+        if
+        sort_param=""
+        ="oldest"
+        %}selected{%
+        endif
+        %}
+      >
+        Timestamp: Oldest (Merge Sort)
+      </option>
+      <option
+        value="confidence_high"
+        {%
+        if
+        sort_param=""
+        ="confidence_high"
+        %}selected{%
+        endif
+        %}
+      >
+        Confidence: High to Low
+      </option>
+      <option
+        value="confidence_low"
+        {%
+        if
+        sort_param=""
+        ="confidence_low"
+        %}selected{%
+        endif
+        %}
+      >
+        Confidence: Low to High
+      </option>
+    </select>
+  </div>
+  <div class="ctrl-box">
+    <select name="filter_result">
+      <option value="all" {% if filter_result="" ="all" %}selected{% endif %}>
+        All Outcomes
+      </option>
+      <option
+        value="TB Positive"
+        {%
+        if
+        filter_result=""
+        ="TB Positive"
+        %}selected{%
+        endif
+        %}
+      >
+        TB Positive Only
+      </option>
+      <option
+        value="Normal"
+        {%
+        if
+        filter_result=""
+        ="Normal"
+        %}selected{%
+        endif
+        %}
+      >
+        Normal Only
+      </option>
+    </select>
+  </div>
+  <button type="submit" class="btn-apply">Execute Algorithms</button>
+</form>
+
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Patient Ref</th>
+        <th>Diagnostic Finding</th>
+        <th>Confidence</th>
+        <th>Timestamp (IST)</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for report in reports %}
+      <tr>
+        <td>{{ report.id }}</td>
+        <td style="font-weight: 700; color: #fff">{{ report.patient_id }}</td>
+        <td>
+          <span
+            style="color: {% if report.result == 'TB Positive' %}#ef4444{% else %}#10b981{% endif %}; font-weight:700;"
+          >
+            {{ report.result }}
+          </span>
+        </td>
+        <td>{{ report.confidence }}%</td>
+        <td>{{ report.created_at }}</td>
+        <td>
+          <a
+            href="{% url 'download_pdf' report.id %}"
+            style="color: var(--teal-glow); text-decoration: none"
+            ><i class="fa-solid fa-download"></i> PDF</a
+          >
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td
+          colspan="6"
+          style="text-align: center; color: var(--text-muted); padding: 40px"
+        >
+          No patient records match the specified query definitions.
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

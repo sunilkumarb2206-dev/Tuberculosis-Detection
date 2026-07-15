@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TB SCAN AI &bull; Operator Sign In</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --bg-dark: #0b1329;
+        --panel-dark: #111a2e;
+        --border-clr: #1e293b;
+        --teal-glow: #00f2fe;
+        --teal-dim: #0284c7;
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+      }
+      body {
+        background-color: var(--bg-dark);
+        color: var(--text-main);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+      .box {
+        width: 100%;
+        max-width: 380px;
+        background: var(--panel-dark);
+        padding: 35px;
+        border-radius: 12px;
+        border: 1px solid var(--border-clr);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        box-sizing: border-box;
+      }
+      h2 {
+        margin-top: 0;
+        text-align: center;
+        color: var(--teal-glow);
+        margin-bottom: 25px;
+      }
+      label {
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-muted);
+        margin-bottom: 5px;
+      }
+      input {
+        width: 100%;
+        padding: 11px 14px;
+        background: var(--bg-dark);
+        color: #fff;
+        border: 1px solid var(--border-clr);
+        border-radius: 6px;
+        box-sizing: border-box;
+        margin-bottom: 15px;
+        font-size: 14px;
+      }
+      input:focus {
+        outline: none;
+        border-color: var(--teal-dim);
+      }
+      .password-container {
+        position: relative;
+      }
+      .password-container input {
+        padding-right: 40px;
+      }
+      .password-container i.toggle-eye {
+        position: absolute;
+        right: 14px;
+        top: 13px;
+        color: var(--text-muted);
+        cursor: pointer;
+      }
+      .password-container i.toggle-eye:hover {
+        color: var(--teal-glow);
+      }
+      .btn {
+        width: 100%;
+        padding: 12px;
+        background: var(--teal-dim);
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s;
+        margin-top: 5px;
+        margin-bottom: 10px;
+      }
+      .btn:hover {
+        background: var(--teal-glow);
+        color: var(--bg-dark);
+      }
+      .banner-error {
+        background: rgba(239, 68, 68, 0.15);
+        color: #ef4444;
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 13px;
+        margin-bottom: 15px;
+        text-align: center;
+        font-weight: 600;
+      }
+      .banner-info,
+      .banner-success {
+        background: rgba(0, 242, 254, 0.15);
+        color: var(--teal-glow);
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 13px;
+        margin-bottom: 15px;
+        text-align: center;
+        font-weight: 600;
+      }
+      .footer-link {
+        text-align: center;
+        font-size: 12px;
+        margin-top: 20px;
+        color: var(--text-muted);
+      }
+      .footer-link a {
+        color: var(--teal-glow);
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .forgot-password-link {
+        text-align: right;
+        font-size: 11px;
+        margin-top: -10px;
+        margin-bottom: 15px;
+      }
+      .forgot-password-link a {
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: 0.2s;
+      }
+      .forgot-password-link a:hover {
+        color: var(--teal-glow);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <h2><i class="fa-solid fa-lungs"></i> Operator Sign In</h2>
+
+      {% if message %}
+      <div class="{{ status_class }}">{{ message }}</div>
+      {% endif %}
+
+      <form method="POST">
+        {% csrf_token %}
+        <label>EMAIL ADDRESS OR ID</label>
+        <input
+          type="text"
+          name="identifier"
+          value="{{ identifier }}"
+          required
+          placeholder="Enter ID or Email"
+        />
+
+        <label>PASSWORD</label>
+        <div class="password-container">
+          <input
+            type="password"
+            name="password"
+            id="loginPassword"
+            required
+            placeholder="••••••••"
+          />
+          <i
+            class="fa-solid fa-eye toggle-eye"
+            onclick="togglePassword('loginPassword', this)"
+          ></i>
+        </div>
+
+        <div class="forgot-password-link">
+          <a href="{% url 'password_reset' %}">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn">Sign In</button>
+      </form>
+
+      <div class="footer-link">
+        New operator? <a href="/register/">Register here</a>
+      </div>
+    </div>
+
+    <script>
+      function togglePassword(fieldId, iconElement) {
+        const field = document.getElementById(fieldId);
+        if (field.type === "password") {
+          field.type = "text";
+          iconElement.className = "fa-solid fa-eye-slash toggle-eye";
+        } else {
+          field.type = "password";
+          iconElement.className = "fa-solid fa-eye toggle-eye";
+        }
+      }
+    </script>
+  </body>
+</html>

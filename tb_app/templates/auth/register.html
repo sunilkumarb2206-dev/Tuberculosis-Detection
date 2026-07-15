@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TB SCAN AI &bull; Operator Registration</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --bg-dark: #0b1329;
+        --panel-dark: #111a2e;
+        --border-clr: #1e293b;
+        --teal-glow: #00f2fe;
+        --teal-dim: #0284c7;
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+      }
+      body {
+        background-color: var(--bg-dark);
+        color: var(--text-main);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+      .box {
+        width: 100%;
+        max-width: 440px;
+        background: var(--panel-dark);
+        padding: 35px;
+        border-radius: 12px;
+        border: 1px solid var(--border-clr);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      }
+      h2 {
+        margin-top: 0;
+        text-align: center;
+        color: var(--teal-glow);
+        margin-bottom: 25px;
+      }
+      label {
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text-muted);
+        margin-bottom: 5px;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 11px 14px;
+        background: var(--bg-dark);
+        color: #fff;
+        border: 1px solid var(--border-clr);
+        border-radius: 6px;
+        box-sizing: border-box;
+        margin-bottom: 15px;
+        font-size: 14px;
+      }
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: var(--teal-dim);
+      }
+      .btn {
+        width: 100%;
+        padding: 12px;
+        background: var(--teal-dim);
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s;
+        margin-bottom: 10px;
+      }
+      .btn:hover {
+        background: var(--teal-glow);
+        color: var(--bg-dark);
+      }
+      .btn-secondary {
+        background: #334155;
+        font-size: 12px;
+        padding: 8px;
+        margin-bottom: 5px;
+      }
+      .countdown-text {
+        font-size: 12px;
+        color: var(--teal-glow);
+        text-align: center;
+        margin-bottom: 15px;
+        font-weight: 600;
+      }
+      .banner-success {
+        background: rgba(16, 185, 129, 0.2);
+        color: #10b981;
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 13px;
+        margin-bottom: 15px;
+        text-align: center;
+        font-weight: 600;
+      }
+      .banner-error {
+        background: rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 13px;
+        margin-bottom: 15px;
+        text-align: center;
+        font-weight: 600;
+      }
+      .banner-info {
+        background: rgba(0, 242, 254, 0.2);
+        color: var(--teal-glow);
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 13px;
+        margin-bottom: 15px;
+        text-align: center;
+        font-weight: 600;
+      }
+      .footer-link {
+        text-align: center;
+        font-size: 12px;
+        margin-top: 15px;
+        color: var(--text-muted);
+      }
+      .footer-link a {
+        color: var(--teal-glow);
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .password-container {
+        position: relative;
+      }
+      .password-container i {
+        position: absolute;
+        right: 14px;
+        top: 14px;
+        cursor: pointer;
+        color: var(--text-muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <h2><i class="fa-solid fa-lungs"></i> New Operator Signup</h2>
+
+      {% if message %}
+      <div class="{{ status_class }}">{{ message }}</div>
+      {% endif %}
+
+      <form method="POST">
+        {% csrf_token %}
+        <label>FULL NAME / TITLE</label>
+        <input
+          type="text"
+          name="username"
+          value="{{ username }}"
+          required
+          placeholder="Dr. Example Name"
+        />
+
+        <label>EMAIL ADDRESS</label>
+        <input
+          type="email"
+          name="identifier"
+          value="{{ identifier }}"
+          required
+          placeholder="name@gmail.com"
+        />
+        <button
+          type="submit"
+          name="action"
+          value="send_otp"
+          class="btn btn-secondary"
+          formnovalidate
+        >
+          Send Verification OTP
+        </button>
+
+        <label>OTP VERIFICATION CODE</label>
+        <input
+          type="text"
+          name="otp"
+          id="otpInput"
+          placeholder="4-digit code"
+        />
+        <button
+          type="submit"
+          name="action"
+          value="verify_otp"
+          class="btn btn-secondary"
+          id="verifyBtn"
+          formnovalidate
+        >
+          Verify OTP
+        </button>
+        <div class="countdown-text" id="timerDisplay"></div>
+
+        <label>AGE</label>
+        <input type="text" name="age" value="{{ age }}" placeholder="Age" />
+
+        <label>GENDER</label>
+        <select name="gender" id="genderSelect">
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+
+        <label>PASSWORD (8+ chars alphanumeric)</label>
+        <div class="password-container">
+          <input
+            type="password"
+            name="password"
+            id="p1"
+            required
+            placeholder="••••••••"
+          />
+          <i class="fa-solid fa-eye" onclick="toggleP('p1', this)"></i>
+        </div>
+
+        <label>RE-ENTER PASSWORD</label>
+        <div class="password-container">
+          <input
+            type="password"
+            name="re_password"
+            id="p2"
+            required
+            placeholder="••••••••"
+          />
+          <i class="fa-solid fa-eye" onclick="toggleP('p2', this)"></i>
+        </div>
+
+        <button type="submit" name="action" value="register_final" class="btn">
+          Initialize Account
+        </button>
+      </form>
+
+      <div class="footer-link">
+        Existing operator? <a href="/login/">Sign In</a>
+      </div>
+    </div>
+
+    <script>
+      // Automatically set the selected gender value from Django context safely
+      const serverGender = "{{ gender|default:'Male' }}";
+      if (serverGender) {
+        document.getElementById("genderSelect").value = serverGender;
+      }
+
+      // 60-Second Countdown logic tracking status from context matching backend
+      const isOtpSent = "{{ otp_sent }}" === "True";
+      let timeLeft = 60;
+      const timerDisplay = document.getElementById("timerDisplay");
+      const verifyBtn = document.getElementById("verifyBtn");
+      const otpInput = document.getElementById("otpInput");
+
+      if (isOtpSent) {
+        const countdownInterval = setInterval(() => {
+          if (timeLeft > 0) {
+            timerDisplay.textContent = `Time remaining to enter OTP: ${timeLeft}s`;
+            timeLeft--;
+          } else {
+            clearInterval(countdownInterval);
+            timerDisplay.textContent =
+              "OTP Expired! Click 'Send Verification OTP' again.";
+            verifyBtn.disabled = true;
+            verifyBtn.style.opacity = "0.5";
+            otpInput.disabled = true;
+          }
+        }, 1000);
+      } else {
+        verifyBtn.disabled = false;
+        timerDisplay.textContent = "";
+      }
+
+      function toggleP(id, el) {
+        const f = document.getElementById(id);
+        if (f.type === "password") {
+          f.type = "text";
+          el.className = "fa-solid fa-eye-slash";
+        } else {
+          f.type = "password";
+          el.className = "fa-solid fa-eye";
+        }
+      }
+    </script>
+  </body>
+</html>
